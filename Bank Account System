@@ -1,0 +1,49 @@
+class BankAccount:
+    def __init__(self, N, H, B):
+        self.__account_number = N
+        self.__account_holder = H
+        self.__balance = B
+
+    def Deposit(self, amount):
+        self.__balance = self.__balance + amount
+        print("You have deposited:", amount, "The new balance is:", self.__balance)
+
+    def Withdraw(self, amount):
+        if amount > self.__balance:
+            print("insufficient balance")
+        else:
+            self.__balance = self.__balance - amount
+            print("You have withdrawn:", amount, "The new balance is:", self.__balance)
+
+    def Display(self):
+        print("Account Number:", self.__account_number)
+        print("Account Holder:", self.__account_holder)
+        print("Balance:", self.__balance)
+
+    # Getter
+    def GetBalance(self):  # lets other classes read the balance without touching the variable directly
+        return self.__balance
+
+    # Setter
+    def SetBalance(self, new_balance):  # lets other classes update the balance without touching it directly
+        self.__balance = new_balance
+
+
+class SavingsAccount(BankAccount):
+    def __init__(self, N, H, B):
+        super().__init__(N, H, B)
+        self.__interest_rate = 0.05
+
+    def ApplyInterest(self):
+        current_balance = self.GetBalance()  # use getter
+        new_balance = current_balance + (current_balance * self.__interest_rate)
+        self.SetBalance(new_balance)         # use setter
+        print("With Interest:", new_balance)
+
+
+obj = SavingsAccount("12345", "Alice", 1000)
+obj.Display()
+obj.Deposit(500)
+obj.Withdraw(200)
+obj.ApplyInterest()
+obj.Display()
